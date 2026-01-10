@@ -1,0 +1,10 @@
+# Ablation: Baseline (无创新点，等效于原H-CLIP)
+# 用于基准对比
+
+_BASE_: ../vitb_384_enhanced.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    # 禁用所有创新点
+    USE_ADAPTIVE_ENERGY: False
+    USE_MULTI_SCALE_FUSION: False
+    USE_CLASS_AWARE_PROJECTION: False

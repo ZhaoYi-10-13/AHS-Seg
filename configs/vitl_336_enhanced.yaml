@@ -1,0 +1,87 @@
+# Enhanced CATSeg Configuration for ViT-L/14
+# 集成三个创新点: HA-HEM, MH-FPN, DC-HSP
+# Author: ECCV 2026 Submission
+
+_BASE_: config.yaml
+MODEL:
+  META_ARCHITECTURE: "EnhancedCATSeg"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  SEM_SEG_HEAD:
+    NAME: "CATSegHead"
+    IN_FEATURES: ["res2", "res3", "res4"]
+    IGNORE_VALUE: 255
+    NUM_CLASSES: 171
+    TRAIN_CLASS_JSON: "datasets/coco.json"
+    TEST_CLASS_JSON: "datasets/coco.json"
+    CLIP_PRETRAINED: "ViT-L/14@336px"
+    PROMPT_DEPTH: 0
+    PROMPT_LENGTH: 0
+    
+    # ViT-L/14 dimensions
+    TEXT_GUIDANCE_DIM: 768
+    TEXT_GUIDANCE_PROJ_DIM: 256
+    APPEARANCE_GUIDANCE_DIM: 1024
+    APPEARANCE_GUIDANCE_PROJ_DIM: 256
+    
+    DECODER_DIMS: [128, 64]
+    DECODER_GUIDANCE_DIMS: [512, 256]
+    DECODER_GUIDANCE_PROJ_DIMS: [64, 32]
+    NUM_LAYERS: 2
+    NUM_HEADS: 8
+    HIDDEN_DIMS: 256
+    POOLING_SIZES: [2, 2]
+    FEATURE_RESOLUTION: [24, 24]
+    WINDOW_SIZES: 12
+    ATTENTION_TYPE: "linear"
+    CLIP_FINETUNE: "oft_both"
+    
+    # ===============================
+    # 创新点1: HA-HEM
+    # ===============================
+    USE_ADAPTIVE_ENERGY: True
+    ENERGY_LOSS_WEIGHT: 0.01
+    
+    # ===============================
+    # 创新点2: MH-FPN
+    # ===============================
+    USE_MULTI_SCALE_FUSION: True
+    MS_LAYER_INDICES: [7, 15, 23]  # ViT-L的层索引
+    BOUNDARY_LOSS_WEIGHT: 0.1
+    
+    # ===============================
+    # 创新点3: DC-HSP
+    # ===============================
+    USE_CLASS_AWARE_PROJECTION: True
+    CONTRASTIVE_LOSS_WEIGHT: 0.05
+    HIERARCHY_LOSS_WEIGHT: 0.02
+
+  PROMPT_ENSEMBLE_TYPE: "single"
+
+INPUT:
+  MIN_SIZE_TRAIN: (336, )
+  MIN_SIZE_TRAIN_SAMPLING: "choice"
+  MIN_SIZE_TEST: 640
+  CROP:
+    ENABLED: True
+    TYPE: "absolute"
+    SIZE: (336, 336)
+  SIZE_DIVISIBILITY: 336
+  FORMAT: "RGB"
+  DATASET_MAPPER_NAME: "mask_former_semantic"
+
+SOLVER:
+  IMS_PER_BATCH: 2  # ViT-L needs less batch due to memory
+  LR_SCHEDULER_NAME: WarmupCosineLR
+  BASE_LR: 0.0001  # Lower LR for larger model
+  MAX_ITER: 80000
+  BACKBONE_MULTIPLIER: 0.0
+  CLIP_MULTIPLIER: 0.005  # Lower for stability
+  
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 1.0
+
+TEST:
+  EVAL_PERIOD: 5000

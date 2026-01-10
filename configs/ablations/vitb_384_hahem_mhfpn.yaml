@@ -1,0 +1,9 @@
+# Ablation: HA-HEM + MH-FPN
+# 用于验证创新点1+2的组合效果
+
+_BASE_: ../vitb_384_enhanced.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    USE_ADAPTIVE_ENERGY: True
+    USE_MULTI_SCALE_FUSION: True
+    USE_CLASS_AWARE_PROJECTION: False

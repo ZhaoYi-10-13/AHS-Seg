@@ -1,0 +1,10 @@
+# Ablation: Only HA-HEM (层级自适应超球面能量调制)
+# 用于验证创新点1的有效性
+
+_BASE_: ../vitb_384_enhanced.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    # 只启用HA-HEM
+    USE_ADAPTIVE_ENERGY: True
+    USE_MULTI_SCALE_FUSION: False
+    USE_CLASS_AWARE_PROJECTION: False

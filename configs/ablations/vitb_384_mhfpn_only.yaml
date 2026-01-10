@@ -1,0 +1,10 @@
+# Ablation: Only MH-FPN (多尺度超球面特征金字塔)
+# 用于验证创新点2的有效性
+
+_BASE_: ../vitb_384_enhanced.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    # 只启用MH-FPN
+    USE_ADAPTIVE_ENERGY: False
+    USE_MULTI_SCALE_FUSION: True
+    USE_CLASS_AWARE_PROJECTION: False

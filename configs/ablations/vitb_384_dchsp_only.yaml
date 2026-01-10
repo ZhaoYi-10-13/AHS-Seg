@@ -1,0 +1,10 @@
+# Ablation: Only DC-HSP (动态类别感知超球面投影)
+# 用于验证创新点3的有效性
+
+_BASE_: ../vitb_384_enhanced.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    # 只启用DC-HSP
+    USE_ADAPTIVE_ENERGY: False
+    USE_MULTI_SCALE_FUSION: False
+    USE_CLASS_AWARE_PROJECTION: True
