@@ -140,7 +140,7 @@ class EnhancedCATSeg(nn.Module):
         if use_multi_scale_fusion:
             self.ms_fpn = MultiScaleHypersphericalFPN(
                 in_channels_list=[self.proj_dim, self.proj_dim, self.proj_dim],
-                out_channels=self.proj_dim,
+                out_channels=512,  # Fixed: use 512 instead of self.proj_dim for stability
                 feature_size=24,  # CLIP ViT-B/16 feature map size
                 fusion_type='weighted'
             )

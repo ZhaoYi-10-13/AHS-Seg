@@ -42,14 +42,14 @@ MODEL:
     # ===============================
     # 创新点2: MH-FPN (多尺度超球面特征金字塔)
     # ===============================
-    USE_MULTI_SCALE_FUSION: True
+    USE_MULTI_SCALE_FUSION: False  # Temporarily disabled due to dimension mismatch
     MS_LAYER_INDICES: [3, 7, 11]  # 要提取特征的层索引
     BOUNDARY_LOSS_WEIGHT: 0.1
     
     # ===============================
     # 创新点3: DC-HSP (动态类别感知超球面投影)
     # ===============================
-    USE_CLASS_AWARE_PROJECTION: True
+    USE_CLASS_AWARE_PROJECTION: False  # Temporarily disabled for quick validation
     CONTRASTIVE_LOSS_WEIGHT: 0.05
     HIERARCHY_LOSS_WEIGHT: 0.02
 
