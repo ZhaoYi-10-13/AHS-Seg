@@ -43,7 +43,7 @@ if __name__ == "__main__":
     print("ADE20K-847 数据集准备脚本")
     print("=" * 50)
     
-    dataset_dir = Path(os.getenv("DETECTRON2_DATASETS", "datasets"))
+    dataset_dir = Path(os.getenv("DETECTRON2_DATASETS", "/root/datasets"))
     index_file = dataset_dir / "ADE20K_2021_17_01" / "index_ade20k.pkl"
     
     # 检查索引文件是否存在
