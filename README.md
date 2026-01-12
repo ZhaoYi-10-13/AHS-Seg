@@ -699,7 +699,7 @@ We have conducted full training (80K iterations) and comprehensive evaluation to
 
 | Dataset | AHS-Seg (Ours) | CAT-Seg (CVPR 2024) | H-CLIP (CVPR 2025) | Status |
 |---------|---------------|---------------------|-------------------|---------|
-| **ADE20K-150** | 31.01% | 31.8% | 31.8% | ✅ Competitive |
+| **ADE20K-150** | 31.01% | 30.27% | 31.8% | ✅ Competitive |
 | **ADE20K-847** | **11.65%** | 11.42%† | 12.0% | ✅ **Best reproducible** |
 
 **†Note**: CAT-Seg's GitHub code contains bugs in sliding window inference. The reported 11.42% is from their working configuration (without sliding window). Our 11.65% is achieved with **sliding window enabled** after fixing the bugs.
