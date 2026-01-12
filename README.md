@@ -67,36 +67,6 @@ DC-HSP **estimates category complexity** from text embeddings and **dynamically 
 
 ---
 
-## Results
-
-### Comparison with State-of-the-Art
-
-We evaluate on five standard benchmarks for open-vocabulary semantic segmentation:
-
-| Method | Venue | Backbone | ADE-150 | ADE-847 | PC-59 | PC-459 | COCO-Stuff |
-|--------|-------|----------|:-------:|:-------:|:-----:|:------:|:----------:|
-| LSeg | ICLR'22 | ViT-L/16 | 18.0 | 3.8 | 46.5 | 7.8 | - |
-| OpenSeg | ECCV'22 | ViT-L/14 | 21.1 | 6.3 | 42.1 | 9.0 | - |
-| MaskCLIP | ECCV'22 | ViT-B/16 | 23.7 | 8.2 | 45.9 | 10.0 | 24.1 |
-| ZegFormer | CVPR'22 | ViT-B/16 | 32.6 | 10.4 | 53.8 | 14.2 | 36.3 |
-| OVSeg | CVPR'23 | ViT-L/14 | 29.6 | 9.0 | 55.7 | 12.4 | - |
-| SAN | CVPR'23 | ViT-B/16 | 41.1 | 15.7 | 60.2 | 21.1 | 44.3 |
-| CAT-Seg | CVPR'24 | ViT-B/16 | 37.9 | 12.0 | 57.5 | 18.2 | 41.8 |
-| **AHS-Seg (Ours)** | ECCV'26 | ViT-B/16 | **44.9** | **18.1** | **64.8** | **24.6** | **46.9** |
-
-### Ablation Study
-
-| HA-HEM | MH-FPN | DC-HSP | ADE-150 (mIoU) | ADE-847 (mIoU) |
-|:------:|:------:|:------:|:--------------:|:--------------:|
-| - | - | - | 42.8 | 16.3 |
-| ✓ | - | - | 43.5 (+0.7) | 17.0 (+0.7) |
-| - | ✓ | - | 43.8 (+1.0) | 17.2 (+0.9) |
-| - | - | ✓ | 43.4 (+0.6) | 17.1 (+0.8) |
-| ✓ | ✓ | - | 44.2 (+1.4) | 17.6 (+1.3) |
-| ✓ | ✓ | ✓ | **44.9 (+2.1)** | **18.1 (+1.8)** |
-
----
-
 ## 🔧 Multi-Backbone Support
 
 AHS-Seg supports both **ViT-B/16** and **ViT-L/14** backbones with automatic adaptation:
