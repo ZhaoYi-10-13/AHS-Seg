@@ -399,8 +399,11 @@ class EnhancedCATSeg(nn.Module):
         unfold = nn.Unfold(kernel_size=kernel, stride=stride)
         fold = nn.Fold(out_res, kernel_size=kernel, stride=stride)
 
-        image = F.interpolate(images[0].unsqueeze(0), size=out_res, mode='bilinear', align_corners=False).squeeze()
-        image = rearrange(unfold(image), "(C H W) L-> L C H W", C=3, H=kernel)
+        # 保持4D输入给unfold，然后通过unsqueeze(0)添加batch维度给rearrange
+        image = F.interpolate(images[0].unsqueeze(0), size=out_res, mode='bilinear', align_corners=False)
+        image_unfolded = unfold(image)  # [B, C*kernel*kernel, L] 其中B=1
+        # rearrange需要去掉B维度，将[1, C*H*W, L]变成[L, C, H, W]
+        image = rearrange(image_unfolded.squeeze(0), "(C H W) L-> L C H W", C=3, H=kernel)
         global_image = F.interpolate(images[0].unsqueeze(0), size=(kernel, kernel), mode='bilinear', align_corners=False)
         image = torch.cat((image, global_image), dim=0)
 
@@ -423,7 +426,8 @@ class EnhancedCATSeg(nn.Module):
         global_output = outputs[-1:]
         global_output = F.interpolate(global_output, size=out_res, mode='bilinear', align_corners=False)
         outputs = outputs[:-1]
-        outputs = fold(outputs.flatten(1).T) / fold(unfold(torch.ones([1] + out_res, device=self.device)))
+        # 修复：torch.ones需要4D输入[B, C, H, W]，不能是3D
+        outputs = fold(outputs.flatten(1).T) / fold(unfold(torch.ones([1, 1] + out_res, device=self.device)))
         outputs = (outputs + global_output) / 2.
 
         height = batched_inputs[0].get("height", out_res[0])
