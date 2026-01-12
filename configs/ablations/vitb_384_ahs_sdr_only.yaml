@@ -1,0 +1,11 @@
+# AHS-Seg with SDR only
+# 消融实验: 仅使用自蒸馏正则化
+
+_BASE_: ../vitb_384_ahs.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    USE_PROTOTYPE_ALIGNMENT: False
+    USE_SELF_DISTILLATION: True
+    USE_FEATURE_RECTIFICATION: False
+    USE_GEODESIC_SIMILARITY: False
+    DISTILL_LOSS_WEIGHT: 0.1

@@ -1,0 +1,11 @@
+# AHS-Seg with HPA only
+# 消融实验: 仅使用原型对齐
+
+_BASE_: ../vitb_384_ahs.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    USE_PROTOTYPE_ALIGNMENT: True
+    USE_SELF_DISTILLATION: False
+    USE_FEATURE_RECTIFICATION: False
+    USE_GEODESIC_SIMILARITY: False
+    PROTOTYPE_LOSS_WEIGHT: 0.1

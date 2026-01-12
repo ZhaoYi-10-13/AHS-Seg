@@ -1,0 +1,11 @@
+# AHS-Seg with AFR only
+# 消融实验: 仅使用自适应特征矫正
+
+_BASE_: ../vitb_384_ahs.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    USE_PROTOTYPE_ALIGNMENT: False
+    USE_SELF_DISTILLATION: False
+    USE_FEATURE_RECTIFICATION: True
+    USE_GEODESIC_SIMILARITY: False
+    RECTIFY_LOSS_WEIGHT: 0.05

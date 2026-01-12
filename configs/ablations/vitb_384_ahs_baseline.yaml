@@ -1,0 +1,10 @@
+# AHS-Seg Baseline - 无创新点
+# 用于消融实验对比
+
+_BASE_: ../vitb_384_ahs.yaml
+MODEL:
+  SEM_SEG_HEAD:
+    USE_PROTOTYPE_ALIGNMENT: False
+    USE_SELF_DISTILLATION: False
+    USE_FEATURE_RECTIFICATION: False
+    USE_GEODESIC_SIMILARITY: False

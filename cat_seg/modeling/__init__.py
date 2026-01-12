@@ -13,3 +13,13 @@ from .class_aware_projection import (
     ClassContrastiveLoss,
     ClassAwareLossModule
 )
+
+# AHS-Seg: 大道至简版本 - 新增创新模块
+from .hyperspherical_innovations import (
+    HypersphericalPrototypeBank,
+    SelfDistillationRegularizer,
+    GeodesicSimilarityHead,
+    AdaptiveFeatureRectifier,
+    UnifiedHypersphericalLoss,
+    LightweightHypersphericalAttention
+)

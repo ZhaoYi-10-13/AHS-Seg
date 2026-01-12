@@ -93,7 +93,7 @@ def add_cat_seg_config(cfg):
     cfg.TEST.SLIDING_WINDOW = False
     
     # ===============================
-    # Enhanced CATSeg 创新点配置
+    # Enhanced CATSeg 创新点配置 (旧版本)
     # ===============================
     
     # 创新点1: HA-HEM (层级自适应超球面能量调制)
@@ -109,3 +109,26 @@ def add_cat_seg_config(cfg):
     cfg.MODEL.SEM_SEG_HEAD.USE_CLASS_AWARE_PROJECTION = True
     cfg.MODEL.SEM_SEG_HEAD.CONTRASTIVE_LOSS_WEIGHT = 0.05
     cfg.MODEL.SEM_SEG_HEAD.HIERARCHY_LOSS_WEIGHT = 0.02
+    
+    # ===============================
+    # AHS-Seg 创新点配置 (新版本 - 大道至简)
+    # ===============================
+    
+    # 创新点1: HPA (超球面原型对齐)
+    # 在超球面上维护类别原型,通过动量更新保持稳定
+    cfg.MODEL.SEM_SEG_HEAD.USE_PROTOTYPE_ALIGNMENT = True
+    cfg.MODEL.SEM_SEG_HEAD.PROTOTYPE_LOSS_WEIGHT = 0.1
+    
+    # 创新点2: SDR (自蒸馏正则化)
+    # 使用冻结的CLIP作为教师,防止过度遗忘
+    cfg.MODEL.SEM_SEG_HEAD.USE_SELF_DISTILLATION = True
+    cfg.MODEL.SEM_SEG_HEAD.DISTILL_LOSS_WEIGHT = 0.1
+    
+    # 创新点3: AFR (自适应特征矫正)
+    # 学习识别并矫正对迁移有害的特征
+    cfg.MODEL.SEM_SEG_HEAD.USE_FEATURE_RECTIFICATION = True
+    cfg.MODEL.SEM_SEG_HEAD.RECTIFY_LOSS_WEIGHT = 0.05
+    
+    # 可选: GCS (测地相似度)
+    # 用超球面测地距离替代普通余弦相似度
+    cfg.MODEL.SEM_SEG_HEAD.USE_GEODESIC_SIMILARITY = False

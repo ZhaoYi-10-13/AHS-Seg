@@ -17,4 +17,5 @@ from .data.dataset_mappers.mask_former_semantic_dataset_mapper import (
 # models
 from .cat_seg_model import CATSeg
 from .enhanced_cat_seg_model import EnhancedCATSeg
+from .ahs_seg_model import AHSSeg  # 新增: 大道至简版本
 from .test_time_augmentation import SemanticSegmentorWithTTA

@@ -1,0 +1,98 @@
+# AHS-Seg Configuration
+# 大道至简: 高效创新的开放词汇语义分割
+# 
+# 核心创新:
+# 1. HPA: Hyperspherical Prototype Alignment - 原型对齐
+# 2. SDR: Self-Distillation Regularizer - 自蒸馏正则化
+# 3. AFR: Adaptive Feature Rectification - 自适应特征矫正
+#
+# 设计原则:
+# - 新增参数 < 2M
+# - 推理时间增加 < 5%
+# - 专注于跨数据集泛化
+
+_BASE_: config.yaml
+MODEL:
+  META_ARCHITECTURE: "AHSSeg"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  SEM_SEG_HEAD:
+    NAME: "CATSegHead"
+    IN_FEATURES: ["res2", "res3", "res4"]
+    IGNORE_VALUE: 255
+    NUM_CLASSES: 171
+    TRAIN_CLASS_JSON: "datasets/coco.json"
+    TEST_CLASS_JSON: "datasets/coco.json"
+    CLIP_PRETRAINED: "ViT-B/16"
+    PROMPT_DEPTH: 0
+    PROMPT_LENGTH: 0
+    TEXT_GUIDANCE_DIM: 512
+    TEXT_GUIDANCE_PROJ_DIM: 128
+    APPEARANCE_GUIDANCE_DIM: 512
+    APPEARANCE_GUIDANCE_PROJ_DIM: 128
+    DECODER_DIMS: [64, 32]
+    DECODER_GUIDANCE_DIMS: [256, 128]
+    DECODER_GUIDANCE_PROJ_DIMS: [32, 16]
+    NUM_LAYERS: 2
+    NUM_HEADS: 4
+    HIDDEN_DIMS: 128
+    POOLING_SIZES: [2, 2]
+    FEATURE_RESOLUTION: [24, 24]
+    WINDOW_SIZES: 12
+    ATTENTION_TYPE: "linear"
+    CLIP_FINETUNE: "oft_both"
+    
+    # ===============================
+    # 创新点1: HPA (超球面原型对齐)
+    # ===============================
+    USE_PROTOTYPE_ALIGNMENT: True
+    PROTOTYPE_LOSS_WEIGHT: 0.1
+    
+    # ===============================
+    # 创新点2: SDR (自蒸馏正则化)
+    # ===============================
+    USE_SELF_DISTILLATION: True
+    DISTILL_LOSS_WEIGHT: 0.1
+    
+    # ===============================
+    # 创新点3: AFR (自适应特征矫正)
+    # ===============================
+    USE_FEATURE_RECTIFICATION: True
+    RECTIFY_LOSS_WEIGHT: 0.05
+    
+    # ===============================
+    # 可选: GCS (测地相似度)
+    # ===============================
+    USE_GEODESIC_SIMILARITY: False  # 默认关闭,可用于消融实验
+
+  PROMPT_ENSEMBLE_TYPE: "single"
+
+INPUT:
+  MIN_SIZE_TRAIN: (384, )
+  MIN_SIZE_TRAIN_SAMPLING: "choice"
+  MIN_SIZE_TEST: 640
+  CROP:
+    ENABLED: True
+    TYPE: "absolute"
+    SIZE: (384, 384)
+  SIZE_DIVISIBILITY: 384 
+  FORMAT: "RGB"
+  DATASET_MAPPER_NAME: "mask_former_semantic"
+
+SOLVER:
+  IMS_PER_BATCH: 4 
+  LR_SCHEDULER_NAME: WarmupCosineLR
+  BASE_LR: 0.0002
+  MAX_ITER: 80000
+  BACKBONE_MULTIPLIER: 0.0
+  CLIP_MULTIPLIER: 0.01
+  
+  # 梯度裁剪
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 1.0
+
+TEST:
+  EVAL_PERIOD: 5000
+  SLIDING_WINDOW: True
